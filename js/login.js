@@ -34,7 +34,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         localStorage.setItem('userId', user.id);
         isValidUser = true;  
         if (user.id === '1') { 
-          window.location.href = './index';
+          window.location.href = './branch';
         } else if (user.id === '2' || user.id === '3') {                        
           window.location.href = './admin';                    
         } else {                       
