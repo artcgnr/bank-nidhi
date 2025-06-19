@@ -159,7 +159,7 @@ window.updateStatus = function(fullId, status) {
 window.markAsSent = function(id, status) {
   const markAsData = {
     status,
-    isSent: true // ✅ This is required for proper filtering
+    isSent: true 
   };
 
   const itemRef = ref(db, 'transfers/' + id);

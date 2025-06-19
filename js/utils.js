@@ -22,7 +22,7 @@ export function checkAndSetBranchName() {
         if (nameInput) nameInput.value = branchName;
         if (costcenter) costcenter.value = branchName;
     } else {
-        window.location.href = './login.html';
+        window.location.href = './';
     }
 }
 

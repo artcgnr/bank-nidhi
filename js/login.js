@@ -34,9 +34,9 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         localStorage.setItem('userId', user.id);
         isValidUser = true;  
         if (user.id === '1') { 
-          window.location.href = 'index.html';
+          window.location.href = './index';
         } else if (user.id === '2' || user.id === '3') {                        
-          window.location.href = 'admin.html';                    
+          window.location.href = './admin';                    
         } else {                       
           errorMessage.innerHTML = "Invalid user. Please contact support.";                    
         }                 
