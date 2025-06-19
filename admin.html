@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nidhi bank transfer - Admin Panel</title>   
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script> 
+</head>
+<body>
+    
+<nav>    
+  <div class="logo"><h3>Chengannur Nidhi</h3></div>
+  <div class="infosec">
+  <div class="exit"><a href="login.html"><img src="images/exit.png" alt="exit" title="Exit"></a></div>
+  <div class="user-info"> 
+    <img src="images/user.png" alt="user icon">      
+    <p id="branchNamehid"></p>      
+    <input type="hidden" id="hidbranchName">
+    <input type="hidden" id="costcenter">   
+  </div>
+  </div>
+</nav>
+<div id="toast" class="toast hidden">New transfer received!</div>
+<div class="adm_main_container">  
+
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab('pending')"><img src="images/pending.png" alt="pending">Pending</button>
+      <button class="tab-button" onclick="showTab('approved')"><img src="images/appved.png" alt="approved">Approved</button>
+      <button class="tab-button" onclick="showTab('sent')"><img src="images/send.png" alt="send">Completed</button>
+      <button class="tab-button" onclick="showTab('rejected')"><img src="images/rejected.png" alt="rejected">Rejected</button>
+    </div>
+    
+    <div class="output_container">
+    <div id="pending" class="tab-content">
+      <div class="outsection">
+      <h3>Pending List</h3>
+      <button class="primary-button" onclick="exportToExcel('pending')" title="Export to excel"><img src="images/excel.png" alt="" title="Export to excel">Export</button>
+      </div>
+      <div id="pendingList"></div>
+    </div>
+
+    <div id="approved" class="tab-content hidden">
+      <div class="outsection">
+      <h3>Approved List (Cash Not Transferred)</h3>
+      <button class="primary-button" onclick="exportToExcel('approved')" title="Export to excel"><img src="images/excel.png" alt="" title="Export to excel">Export</button>
+      </div>
+      <div id="approvedList"></div>
+    </div>
+
+    <div id="sent" class="tab-content hidden">
+      <div class="outsection">
+      <h3>Cash Transferred List</h3>
+      <button class="primary-button" onclick="exportToExcel('sent')" title="Export to excel"><img src="images/excel.png" alt="" title="Export to excel">Export</button>
+      </div>
+      <div id="sentList"></div>
+    </div>
+
+    <div id="rejected" class="tab-content hidden">
+      <div class="outsection">
+      <h3>Rejected List</h3>
+      <button class="primary-button" onclick="exportToExcel('rejected')" title="Export to excel"><img src="images/excel.png" alt="" title="Export to excel">Export</button>
+      </div>
+      <div id="rejectedList"></div>
+    </div>
+  </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
