@@ -66,7 +66,7 @@ if (!table) {
   const wrapper = document.createElement('div');
   wrapper.style.overflowX = 'auto'; 
   wrapper.style.maxWidth = '100%'; 
-  wrapper.style.height = '450px';
+  wrapper.style.height = '425px';
 
   table = document.createElement('table');
   table.className = 'transfer-table';
