@@ -62,27 +62,34 @@ function renderRow(item, fullId, containerId, statusFilter, isSentFilter = null)
   const container = document.getElementById(containerId);
   let table = container.querySelector('table');
 
-  if (!table) {
-    table = document.createElement('table');
-    table.className = 'transfer-table';
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th>Branch</th>
-          <th>Date</th>
-          <th>Pledge No</th>
-          <th>Beneficiary</th>
-          <th>Account Number</th>
-          <th>IFSC</th>
-          <th>Method</th>
-          <th>Amount</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-    container.appendChild(table);
-  }
+if (!table) {
+  const wrapper = document.createElement('div');
+  wrapper.style.overflowX = 'auto'; 
+  wrapper.style.maxWidth = '100%'; 
+  wrapper.style.height = '450px';
+
+  table = document.createElement('table');
+  table.className = 'transfer-table';
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Branch</th>
+        <th>Date</th>
+        <th>Pledge No</th>
+        <th>Beneficiary</th>
+        <th>Account Number</th>
+        <th>IFSC</th>
+        <th>Method</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+  wrapper.appendChild(table);
+  container.appendChild(wrapper);
+}
 
   const tbody = table.querySelector('tbody');
   const row = document.createElement('tr');
