@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let seenTransferIds = new Set();
 let isFirstLoad = true;
-const notificationSound = new Audio('https://www.soundjay.com/buttons/sounds/button-1.mp3');
+const notificationSound = new Audio('audio/123.mp3');
 
 function fetchData() {
   const dbRef = ref(db, 'transfers');
