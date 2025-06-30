@@ -3,97 +3,127 @@ import { checkAndSetBranchName, formatDate } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   checkAndSetBranchName();
-  fetchData();
+
+  ['pending', 'approved', 'sent', 'rejected'].forEach(type => {
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById(`fromdate_${type}`).value = today;
+    document.getElementById(`todate_${type}`).value = today;
+  });
+
+  fetchData(); // Load all data initially
+
+  document.querySelectorAll('.filter-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const type = button.getAttribute('data-type');
+      fetchData(type);
+    });
+  });
 });
 
 let seenTransferIds = new Set();
 let isFirstLoad = true;
 const notificationSound = new Audio('./audio/2.mp3');
 
-function fetchData() {
+function fetchData(tabType = null) {
   const dbRef = ref(db, 'transfers');
+  const isFilteredFetch = tabType !== null;
 
   onValue(dbRef, snapshot => {
     const allCenters = snapshot.val();
-    if (!allCenters) {
-      console.warn("⚠️ No transfer data available.");
-      return;
-    }
+    if (!allCenters) return;
 
-    // Clear containers
-    document.getElementById('pendingList').innerHTML = '';
-    document.getElementById('approvedList').innerHTML = '';
-    document.getElementById('sentList').innerHTML = '';
-    document.getElementById('rejectedList').innerHTML = '';
+    const types = tabType ? [tabType] : ['pending', 'approved', 'sent', 'rejected'];
+    types.forEach(type => document.getElementById(`${type}List`).innerHTML = '');
 
-    // Render
-  Object.entries(allCenters).forEach(([center, transfers]) => {
+    const allRows = {
+      pending: [],
+      approved: [],
+      sent: [],
+      rejected: []
+    };
+
+    Object.entries(allCenters).forEach(([center, transfers]) => {
       Object.entries(transfers).forEach(([id, item]) => {
         const fullId = `${center}/${id}`;
         const status = item.status;
+        const itemDate = item.date ? item.date.split("T")[0] : null;
 
-        // ✅ First-time skip notifications but track
-        if (!seenTransferIds.has(fullId)) {
-          seenTransferIds.add(fullId);
-          if (!isFirstLoad) {
-            showToast(`🔔 New transfer submitted by ${item.branch}`);
-            notificationSound.play();
+        types.forEach(type => {
+          const from = document.getElementById(`fromdate_${type}`).value;
+          const to = document.getElementById(`todate_${type}`).value;
+          if (from && to && itemDate && (itemDate < from || itemDate > to)) return;
+
+          if (!seenTransferIds.has(fullId)) {
+            seenTransferIds.add(fullId);
+            // 👇 Notifications only for *initial unfiltered load*
+            if (!isFirstLoad && !isFilteredFetch) {
+              showToast(`🔔 New transfer submitted by ${item.branch}`);
+              notificationSound.play();
+            }
           }
-        }
 
-        if (status === 'Pending') {
-          renderRow(item, fullId, 'pendingList', 'Pending');
-        } else if (status === 'Approved' && !item.isSent) {
-          renderRow(item, fullId, 'approvedList', 'Approved', false);
-        } else if (status === 'completed') {
-          renderRow(item, fullId, 'sentList', 'completed', true);
-        } else if (status === 'Rejected') {
-          renderRow(item, fullId, 'rejectedList', 'Rejected');
-        }
+          if (type === 'pending' && status === 'Pending') {
+            allRows.pending.push({ item, fullId });
+          } else if (type === 'approved' && status === 'Approved' && !item.isSent) {
+            allRows.approved.push({ item, fullId });
+          } else if (type === 'sent' && status === 'completed' && item.isSent) {
+            allRows.sent.push({ item, fullId });
+          } else if (type === 'rejected' && (status === 'Rejected' || status === 'Bank Rejected')) {
+            allRows.rejected.push({ item, fullId });
+          }
+        });
       });
     });
-    isFirstLoad = false;
 
+    types.forEach(type => {
+      allRows[type].sort((a, b) => new Date(a.item.date) - new Date(b.item.date));
+      allRows[type].forEach(({ item, fullId }) => {
+        renderRow(item, fullId, `${type}List`, type.charAt(0).toUpperCase() + type.slice(1), item.isSent);
+      });
+    });
+
+    isFirstLoad = false;
   });
 }
 
-// Render individual row
-function renderRow(item, fullId, containerId, statusFilter, isSentFilter = null) {
+
+function renderRow(item, fullId, containerId, statusFilter, ) {
   const container = document.getElementById(containerId);
   let table = container.querySelector('table');
+  const idAttr = fullId.replace(/\//g, '_');
 
-if (!table) {
-  const wrapper = document.createElement('div');
-  wrapper.style.overflowX = 'auto'; 
-  wrapper.style.maxWidth = '100%'; 
-  wrapper.style.height = '425px';
+  if (!table) {
+    const wrapper = document.createElement('div');
+    wrapper.style.overflowX = 'auto';
+    wrapper.style.maxWidth = '100%';
+    wrapper.style.height = '425px';
 
-  table = document.createElement('table');
-  table.className = 'transfer-table';
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>Branch</th>
-        <th>Date</th>
-        <th>Pledge No</th>
-        <th>Beneficiary</th>
-        <th>Account Number</th>
-        <th>IFSC</th>
-        <th>Method</th>
-        <th>Amount</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  `;
+    table = document.createElement('table');
+    table.className = 'transfer-table';
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Branch</th>
+          <th>Date</th>
+          <th>Pledge No</th>
+          <th>Beneficiary</th>
+          <th>Account Number</th>
+          <th>IFSC</th>
+          <th>Method</th>
+          <th>Amount</th>
+          <th class="act">Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
 
-  wrapper.appendChild(table);
-  container.appendChild(wrapper);
-}
+    wrapper.appendChild(table);
+    container.appendChild(wrapper);
+  }
 
   const tbody = table.querySelector('tbody');
   const row = document.createElement('tr');
-  const idAttr = fullId.replace(/\//g, '_');
 
   row.innerHTML = `
   <tr>
@@ -105,8 +135,8 @@ if (!table) {
     <td>${item.ifscCode}</td>
     <td>${item.transferType}</td>
     <td>₹${item.amount}</td>
-    <td id="actions-${idAttr}"></td>
-   </tr> 
+    <td class="act" id="actions-${idAttr}"></td>
+    </tr>
   `;
 
   const actionsCell = row.querySelector(`#actions-${idAttr}`);
@@ -116,9 +146,10 @@ if (!table) {
       <button class="action-button btn-approve" onclick="updateStatus('${fullId}', 'Approved')">Approve</button>
       <button class="action-button btn-reject" onclick="updateStatus('${fullId}', 'Rejected')">Reject</button>
     `;
-  } else if (statusFilter === 'Approved' && isSentFilter === false) {
+  } else if (statusFilter === 'Approved') {
     actionsCell.innerHTML = `
-      <button class="action-button btn-send" onclick="markAsSent('${fullId}', 'completed')">Mark as Sent</button>
+      <button class="action-button btn-send" onclick="markAsSent('${fullId}', 'completed')">completed</button>
+       <button class="action-button btn-reject" onclick="updateStatus('${fullId}', 'Bank Rejected')">Rejected</button>
     `;
   } else {
     actionsCell.textContent = '-';
@@ -127,21 +158,6 @@ if (!table) {
   tbody.appendChild(row);
 }
 
-// Update status (Approve / Reject)
-window.updateStatus = function (fullId, newStatus) {
-  const [center, id] = fullId.split('/');
-  const transferRef = ref(db, `transfers/${center}/${id}`);
-  update(transferRef, { status: newStatus });
-};
-
-// Mark as sent
-window.markAsSent = function (fullId, newStatus) {
-  const [center, id] = fullId.split('/');
-  const transferRef = ref(db, `transfers/${center}/${id}`);
-  update(transferRef, { status: newStatus, isSent: true });
-};
-
-// Simple toast function
 function showToast(message) {
   const toast = document.createElement("div");
   toast.className = "toast";
@@ -150,27 +166,16 @@ function showToast(message) {
   setTimeout(() => toast.remove(), 5000);
 }
 
-
-// Approve or Reject transfer
 window.updateStatus = function(fullId, status) {
-  const updateData = { status };
-  if (status === 'Approved') ;
-
   const itemRef = ref(db, 'transfers/' + fullId);
-  update(itemRef, updateData).catch(err => {
+  update(itemRef, { status }).catch(err => {
     alert("Failed to update status: " + err.message);
   });
 }
 
-// Mark approved transfer as sent
 window.markAsSent = function(id, status) {
-  const markAsData = {
-    status,
-    isSent: true 
-  };
-
   const itemRef = ref(db, 'transfers/' + id);
-  update(itemRef, markAsData).catch(err => {
+  update(itemRef, { status, isSent: true }).catch(err => {
     alert("Failed to mark as sent: " + err.message);
   });
 }
