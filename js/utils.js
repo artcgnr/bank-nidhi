@@ -1,80 +1,95 @@
-//date dd/mm/yyyy format
-export function formatDate(dateString) {
-    if (!dateString) return "Unknown Date";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString;
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-}
-
-//branch name 
-export function checkAndSetBranchName() {
-    const branchName = localStorage.getItem('brName');
-
-    if (branchName) {
-        const nameDisplay = document.getElementById('branchNamehid');
-        const nameInput = document.getElementById('hidbranchName');
-        const costcenter = document.getElementById('costcenter');
-
-        if (nameDisplay) nameDisplay.textContent = branchName;
-        if (nameInput) nameInput.value = branchName;
-        if (costcenter) costcenter.value = branchName;
-    } else {
-        window.location.href = './';
-    }
-}
-
-// current date get
-export function getCurrentDate() {
-    return new Date().toISOString().split("T")[0];
-}
-
-//report baranch input show
-export function hideBranchBoxIfAdmin() {
-  const userpremition = localStorage.getItem('userId');
-  const branchnameel = document.getElementById("branchname"); 
-  const tableth = document.getElementById("dlt_th_btn");
-
-  if (userpremition === "1") {
-    if (branchnameel) branchnameel.style.display = 'none';
-    if (tableth) tableth.style.display = 'none';
+// dd/mm/yyyy hh:mm --------------------------
+export function formatDateTime(timestamp) {
+  if (!timestamp) return "-";
+  let d;
+  if (timestamp.toDate) {
+    d = timestamp.toDate();
   }
+  else if (timestamp.seconds) {
+    d = new Date(timestamp.seconds * 1000);
+  }
+  else if (typeof timestamp === "string" || typeof timestamp === "number") {
+    d = new Date(timestamp);
+  }
+  else {
+    return "-";
+  }
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+
+  return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+}
+
+// dd/mm/yyyy --------------------------
+export function formatDate(timestamp) {
+  if (!timestamp) return "-";
+  let d;
+  if (timestamp.toDate) {
+    d = timestamp.toDate();
+  }
+  else if (timestamp.seconds) {
+    d = new Date(timestamp.seconds * 1000);
+  }
+  else if (timestamp instanceof Date) {
+    d = timestamp;
+  }
+  else if (typeof timestamp === "string" || typeof timestamp === "number") {
+    d = new Date(timestamp);
+  }
+  else {
+    return "-";
+  }
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+
+// Get the currently logged-in user from localStorage
+export const currentUser = JSON.parse(localStorage.getItem("loggedUser"));
+
+// Redirect to login page if no user is found
+if (!currentUser) {
+  window.location.href = "./";
 }
 
 // setings page show
-export function settingsLinkOff(){
-const userpremition = getUserRole();
-    const settingsLink = document.getElementById("settingsLink");
-    if ((userpremition === "local" || userpremition === "2") && settingsLink) {
-    const anchor = settingsLink.querySelector("a"); 
-    if (anchor) {  
-        anchor.removeAttribute("href");
+export function settingsLinkOff() {
+  const userpremition = getUserRole();
+  const settingsLink = document.getElementById("settingsLink");
+  if ((userpremition === "local" || userpremition === "admin") && settingsLink) {
+    const anchor = settingsLink.querySelector("a");
+    if (anchor) {
+      anchor.removeAttribute("href");
     }
   }
 };
 
 //bank drop list
-export function branchDropList() {    
-    const bankSelect = document.getElementById("bankName");    
-    fetch("resources/droplist.json")        
-    .then(response => response.json())        
-    .then(data => {            
-        bankSelect.innerHTML = ` <option value="">Select Bank</option> `;            
-        data.bankList.forEach(bank => {                
-            const option = document.createElement("option");                
-            option.value = bank;                
-            option.textContent = bank;               
-            bankSelect.appendChild(option);            
-        });
-    })        
+export function branchDropList() {
+  const bankSelect = document.getElementById("bankName");
+  fetch("resources/droplist.json")
+    .then(response => response.json())
+    .then(data => {
+      bankSelect.innerHTML = ` <option value="">Select Bank</option> `;
+      data.bankList.forEach(bank => {
+        const option = document.createElement("option");
+        option.value = bank;
+        option.textContent = bank;
+        bankSelect.appendChild(option);
+      });
+    })
     .catch(error => console.error("Error loading branches:", error));
 };
 
 //user permission 
 export function getUserRole() {
-  const id = localStorage.getItem("userId");
+  const id = localStorage.getItem("userid");
   if (id === "3") return "superadmin";
   if (id === "2") return "admin";
   if (id === "1") return "local";

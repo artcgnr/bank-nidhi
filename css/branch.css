@@ -1,0 +1,375 @@
+.masked {
+  -webkit-text-security: disc;
+}
+
+.top-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filter-feld {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+
+.input-box.filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.report_section {
+  height: 82vh;
+  width: 100%;
+  background-color: #fcfafa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.table-container {
+  max-height: 418px;
+  overflow-y: auto;
+  border-radius: 8px;
+  background-color: rgb(252, 252, 252);
+  border: 1px solid #bebebe;
+}
+
+table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+}
+
+table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #022950;
+  color: white;
+  z-index: 5;
+  padding: 10px;
+  border: none;
+  font-family: 'Trebuchet MS', sans-serif;
+}
+
+table th,
+table td {
+  padding: 7px;
+  border: 1px solid #ddd;
+  text-align: center;
+  border: none;
+}
+
+table td {
+  font-size: 13px;
+  font-weight: 500;
+  font-style: italic;
+  border-top: 1px solid #022950;
+}
+
+table td b {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: capitalize;
+  font-style: normal;
+}
+
+table td b.status-pending {
+  color: #df7803;
+}
+
+table td b.status-approved {
+  color: #00ac09;
+}
+
+table td b.status-rejected {
+  color: #a10702;
+}
+
+table td b.status-completed {
+  color: #020da1;
+}
+
+table tbody td[colspan="8"] {
+  color: #888;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 5px;
+  background-color: #ffffff;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #022950;
+}
+
+.filter label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.filter input {
+  width: 100%;
+  max-width: 220px;
+  height: 6px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 0px 20px -18px;
+}
+
+.filter input:active {
+  transform: scale(0.95);
+}
+
+.filter input:focus {
+  border: 1px solid #007bff;
+}
+
+/* CSS */
+.btn {
+  align-items: center;
+  appearance: none;
+  background-color: #022950;
+  border-radius: 24px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 35px;
+  justify-content: center;
+  letter-spacing: .25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.btn:hover {
+  background: #F6F9FE;
+  color: #022950;
+  border: 2px solid #022950;
+}
+
+.btn:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+  transform: scale(.9);
+}
+
+.btn:focus {
+  outline: none;
+  border: 2px solid #022950;
+}
+
+
+/* Popup background */
+.popup_container {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+/* Popup box */
+.Transfer-popup {
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 700px;
+  height: 78vh;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+  position: relative;
+}
+
+/* Title */
+.Transfer-popup .title {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #0c0c0c;
+}
+
+.Transfer-popup .title button {
+  background: none;
+  border: none;
+  color: #363636;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.Transfer-popup h3 {
+  font-size: 16px;
+  color: #0c0c0c;
+  padding: 5px;
+  margin: 0;
+}
+
+.Transfer-popup .title button:hover {
+  color: #000;
+  transform: scale(1.1);
+}
+
+/* Form container */
+.inputform {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Two input row */
+.twoInput {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Each input box */
+.inputform .input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  margin-bottom: 9px;
+}
+
+/* One input full width */
+.oneInput {
+  width: 100%;
+}
+
+.oneInput input {
+  width: 97%;
+}
+
+.oneInput select {
+  width: 100%;
+}
+
+/* Inputs & selects */
+.Transfer-popup .input-box input,
+.Transfer-popup .input-box select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  background-color: #dac0a238;
+}
+
+.Transfer-popup .input-box input:focus,
+.Transfer-popup .input-box select:focus {
+  background-color: #fff;
+  border: 1px solid #004386;
+  outline: none;
+}
+
+/* Labels */
+.Transfer-popup .input-box label {
+  font-size: 12px;
+  margin-bottom: 2px;
+  color: #000000;
+}
+
+/* Buttons */
+.popup-sub_btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .twoInput {
+    flex-direction: column;
+  }
+}
+
+/* Message overlay (popup over popup) */
+.popup-message {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Message box */
+.popup-message-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 280px;
+  max-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  animation: scaleIn 0.2s ease;
+}
+
+/* Message text */
+.popup-message-box p {
+  margin: 0 0 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Button */
+.popup-message-box button {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #004386;
+  color: #fff;
+}
+
+/* Animation */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

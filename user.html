@@ -1,90 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nidhi bank transfer - User</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nidhi bank transfer - User</title>
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/user.css">
   <link rel="shortcut icon" type="shortcuticon" href="images/bank.png">
 </head>
+
 <body>
-  
-<nav>    
-  <div class="logo"><h3>Chengannur Nidhi</h3></div>
-  <div class="infosec">
-  <div class="exit"><a href="./"><img src="images/exit.png" alt="exit" title="Exit"></a></div>
-  <div class="user-info"> 
-    <img src="images/user.png" alt="user icon">      
-    <p id="branchNamehid"></p>      
-    <input type="hidden" id="hidbranchName">
-    <input type="hidden" id="costcenter">   
-  </div>
-  </div>
-</nav>
-
-<div class="main_container"> 
-<div class="input_container">
-    <div class="title">
-  <h3>User Settings</h3>
-  <div id="messageContainer"></div>
-</div>
-<br>
-    <div class="inputform">      
-        <div class="input-box">    
-            <input type="text" id="userid" required readonly style="width: 30%;">    
-        </div>     
-        <form action="#" id="user_form">   
-        <div class="input-box">   
-            <input type="text" id="name" placeholder="Name" required autocomplete="off" style="text-transform: capitalize;">    
-        </div>        
-        <div class="input-box">            
-            <input type="text" id="username" placeholder="Username" required>    
-        </div>
-        <div class="input-box">    
-            <input type="password" id="password" placeholder="Password" required>    
-        </div>         
-        <div class="input-box">   
-            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>    
-        </div>
-        <div class="input-box">
-            <select id="usergrop" required style="width: 66%;">
-                <option value="" disabled selected>User Type</option>  
-                <option value="1">Branch</option>
-                <option value="2">Headoffice</option>
-                <option value="3">Admin</option>
-            </select>  
-        </div> 
+  <nav>
+    <div class="logo">
+      <h3>Chengannur Nidhi</h3>
     </div>
-    <br>
-        <div class="sub_btn dual">
-            <button type="submit" class="save">Save</button>           
-            <button type="submit" class="update">Update</button>
-             <button type="reset" class="clear">Clear</button>
+    <div class="infosec">
+      <div class="exit">
+        <a href="admin"><img src="images/dashboard.png" alt="" srcset="" title="Dashboard"></a>
+        <a href="./"><img src="images/exit.png" alt="exit" title="Exit"></a>
+      </div>
+      <div class="user-info">
+        <img src="images/user.png" alt="user icon">
+        <p id="branchNamehid"></p>
+        <input type="hidden" id="hidbranchName">
+        <input type="hidden" id="costcenter">
+      </div>
+    </div>
+  </nav>
+  <div class="main_container">
+    <div class="input_container">
+      <div class="title">
+        <h3>User Settings</h3>
+        <div class="messageContainer" id="messageContainer"></div>
+      </div>
+      <br>
+      <div class="inputform">
+        <div class="input-box">
+          <label for="userid">User ID</label>
+          <input type="text" id="userid" required readonly style="width: 30%;">
         </div>
+        <form action="#" id="user_form">
+          <div class="input-box">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Name" required autocomplete="off"
+              style="text-transform: capitalize;">
+          </div>
+          <div class="input-box">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username" required>
+          </div>
+          <div class="input-box">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password" required>
+          </div>
+          <div class="input-box">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+          </div>
+          <div class="input-box">
+            <label for="code">Code</label>
+            <input type="text" id="code" placeholder="Branch code" required>
+          </div>
+          <div class="input-box">
+            <label for="usergrop">User Group</label>
+            <select id="usergrop" required style="width: 66%;">
+              <option value="" disabled selected>User Group</option>
+              <option value="branch">Branch</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+      </div>
+      <br>
+      <div class="sub_btn dual">
+        <button type="submit" class="save">Save</button>
+        <button type="submit" class="update">Update</button>
+        <button type="reset" class="clear">Clear</button>
+      </div>
+    </div>
+    </form>
+    <div class="report_section">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Code</th>
+              <th style=" align-items: center;"><input type="text" id="nameSearch" placeholder="Name" autocomplete="off"
+                  style="width: 40%; padding: 3px; margin-left: 20px;">
+              </th>
+              <th>Username</th>
+              <th>User Group</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="userList">
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-</form>
-  <div class="report_section">
-     <div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>  
-        <th style=" align-items: center;"><input type="text" id="nameSearch" placeholder="Name" autocomplete="off" style="width: 40%; padding: 3px; margin-left: 20px;">
-        </th>
-        <th>Username</th>
-        <th>User Group</th>
-      </tr>
-    </thead>
-    <tbody id="userList">      
-    </tbody>
-  </table>
-  </div>
-</div>
-</div>
-
-
-
-<script type="module" src="js/user.js"></script>
+  <script type="module" src="js/user.js"></script>
 </body>
+
 </html>

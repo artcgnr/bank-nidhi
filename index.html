@@ -15,15 +15,14 @@
      <h3>Chengannur Nidhi Limited</h3>    
     <p>Bank Transfer Form</p>
     </div>
-    <form id="loginForm" class="loginForm">
+    <div class="loginForm">
       <div id="error-message"></div>
-      <input type="text" placeholder="Username" id="username" name="username" autocomplete="off" required>
-      <input type="password" placeholder="Password" id="password" name="password" autocomplete="off" required>
-      <button type="submit">Log In</button>
-    </form>
+      <input type="text" placeholder="Username" id="username" name="username" autocomplete="off" >
+      <input type="password" placeholder="Password" id="password" name="password" autocomplete="off" >
+      <button id="signInBtn">Log In</button>
+    </div>
   </div>
 
 <script type="module" src="js/login.js"></script>
-<script>localStorage.clear();</script>
 </body>
 </html>

@@ -1,92 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nidhi bank transfer - Form</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nidhi bank transfer - Form</title>
   <link rel="shortcut icon" type="shortcuticon" href="images/bank.png">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/branch.css">
 </head>
+
 <body>
-  
-<nav>    
-  <div class="logo"><h3>Chengannur Nidhi</h3></div>
-  <div class="infosec">
-  <div class="exit"><a href="./"><img src="images/exit.png" alt="exit" title="Exit"></a></div>
-  <div class="user-info"> 
-    <img src="images/user.png" alt="user icon">      
-    <p id="branchNamehid"></p>      
-    <input type="hidden" id="hidbranchName">
-    <input type="hidden" id="costcenter">   
-  </div>
-  </div>
-</nav>
 
-<div class="main_container">  
-  <div class="input_container">
-  <div class="title">
-    <h3>Bank Cash Transfer Form</h3>
-  </div> 
-  <div class="inputform">
-  <form id="transferForm">
-    <div class="input-box">
-      <input type="text" id="pledgeNumber" placeholder="Pledge Number" required autocomplete="off" />
+  <nav>
+    <div class="logo">
+      <h3>Chengannur Nidhi</h3>
     </div>
-    <div class="input-box">
-      <input type="number" id="amount" placeholder="Amount to Transfer" required autocomplete="off"/>
+    <div class="infosec">
+      <div class="exit"><a href="./"><img src="images/exit.png" alt="exit" title="Exit"></a></div>
+      <div class="user-info">
+        <img src="images/user.png" alt="user icon">
+        <p id="branchNamehid"></p>
+        <input type="hidden" id="hidbranchName">
+        <input type="hidden" id="costcenter">
+      </div>
     </div>
-      <div class="input-box">
-      <input type="text" name="BeneficiaryName" id="BeneficiaryName" placeholder="Customer name as on bank passbook" required autocomplete="off"/>
+  </nav>
+
+  <div class="main_container">
+    <div class="report_section">
+      <div class="top-control">
+        <div class="filter-feld">
+          <div class="input-box filter">
+            <label for="fromDate">From</label>
+            <input type="date" id="fromDate">
+          </div>
+          <div class="input-box filter">
+            <label for="toDate">To</label>
+            <input type="date" id="toDate">
+          </div>
+          <button type="submit" class="btn filterBtn" id="filterBtn">Show</button>
+        </div>
+
+        <div class="newButton">
+          <button type="submit" class="btn newTransfer" id="newTransaction">New Transfer</button>
+        </div>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Loan number</th>
+              <th>Name</th>
+              <th>Account number</th>
+              <th>IFSC</th>
+              <th>Method</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="input-box">
-    <input type="password" name="confirmAccountNumber" id="confirmAccountNumber" placeholder="Account Number" required autocomplete="off" />
-    <input type="text" id="accountNumber" placeholder="Re-enter account number" required autocomplete="off"/>
-    </div>
-    <div class="input-box">
-      <select id="bankName" required></select>
-    </div>
-    <div class="input-box">
-       <input type="text" id="ifscCode" placeholder="IFSC Code" required autocomplete="off"/>
-    </div>
-    <div class="input-box">
-       <select id="transferType" required>  
-        <option value="">Transfer Type</option>  
-        <option value="NEFT">NEFT</option>  
-        <option value="RTGS">RTGS</option>  
-        <option value="IMPS">IMPS</option>  
-        <option value="IFT">IFT</option>
-      </select>
-    </div>  
-    </div>    
-    <div class="sub_btn dual">
-      <button type="submit">Submit</button>
-      <button type="reset" class="clear">Cancel</button>
-    </div>      
-    </form>   
-    <div id="successMsg"></div>
   </div>
 
- <div class="report_section">
-  <table>
-    <thead>
-      <tr>
-        <th>Pledge No</th>
-        <th>Name</th>
-        <th>Account Number</th>
-        <th>IFSC</th>
-        <th>Method</th>
-        <th>Amount</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody">
-      <td colspan="8">Please enter a valid date</td>       
-    </tbody>
-  </table>
- </div>
-</div>
+  <!----- Popup ------->
+  <div id="TransferPopup" class="popup_container">
+    <div class="successMsg" id="successMsg"></div>
+    <div class="Transfer-popup">
+      <div class="title">
+        <h3>Cash Transfer Form</h3>
+        <button id="close">X</button>
+      </div>
+      <div class="inputform">
+        <form id="transferForm">
+          <div class="twoInput">
+            <div class="input-box">
+              <label for="code">Id</label>
+              <input type="text" id="code" readonly style="text-transform: uppercase;" />
+            </div>
+            <div class="input-box">
+              <label for="date">Date</label>
+              <input type="text" id="date" readonly />
+            </div>
+            <div class="input-box">
+              <label for="pledgeNumber">Loan Number</label>
+              <input type="text" id="pledgeNumber" placeholder="Pledge Number" required autocomplete="off" />
+            </div>
+          </div>
+          <div class="input-box oneInput">
+            <label for="BeneficiaryName">Name</label>
+            <input type="text" name="BeneficiaryName" id="BeneficiaryName"
+              placeholder="Customer name as on bank passbook" required autocomplete="off" />
+          </div>
+          <div class="input-box oneInput">
+            <label for="bankName">Bank</label>
+            <select name="bankName" id="bankName" required></select>
+          </div>
+          <div class="twoInput">
+            <div class="input-box">
+              <label for="confirmAccountNumber">Account Number</label>
+              <input type="text" class="masked" name="confirmAccountNumber" id="confirmAccountNumber"
+                placeholder="Account Number" required autocomplete="off" />
+            </div>
+            <div class="input-box">
+              <label for="accountNumber">Confirm account number</label>
+              <input type="text" id="accountNumber" placeholder="Re-enter account number" required autocomplete="off" />
+            </div>
+          </div>
+          <div class="twoInput">
+            <div class="input-box">
+              <label for="ifscCode">IFSC</label>
+              <input type="text" id="ifscCode" placeholder="IFSC" required autocomplete="off" />
+            </div>
+            <div class="input-box">
+              <label for="transferType">Mode</label>
+              <select name="transferType" id="transferType" required>
+                <option value="">Transfer Type</option>
+                <option value="NEFT">NEFT</option>
+                <option value="RTGS">RTGS</option>
+                <option value="IMPS">IMPS</option>
+                <option value="IFT">IFT</option>
+              </select>
+            </div>
+          </div>
+          <div class="twoInput">
+            <div class="input-box">
+              <label for="amount">Amount</label>
+              <input type="number" id="amount" placeholder="Loan amount" required autocomplete="off" />
+            </div>
+            <div class="input-box">
+              <label for="remark">Remark</label>
+              <input type="text" id="remark" placeholder="Any remarks.." autocomplete="off" />
+            </div>
+          </div>
+          <div class="popup-sub_btn">
+            <button class="btn" type="submit" id="submitBtn">Submit</button>
+            <button class="btn" type="reset" class="clear">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <!-- Message Overlay -->
+      <div class="popup-message" id="popupMessage">
+        <div class="popup-message-box" id="popupMessageBox">
+          <p id="popupMessageText">Message here</p>
+          <button type="button" id="closeMssg">OK</button>
+          <img id="mssgImg" src="images/send.png" alt="" srcset="" style="width: 50px; height: 50px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
   <script type="module" src="js/app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
 </html>

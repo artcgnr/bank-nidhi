@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="file" id="excelFile" accept=".xlsx,.xls" />
+    <button type="button" id="importBtn">Import Users</button>
+
+    <script type="module">
+        import * as XLSX from "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/+esm";
+        import { db, setDoc, serverTimestamp, doc, collection, getDocs, query, where, Timestamp } from "./js/database.js";
+        document.getElementById("importBtn").addEventListener("click", importUsers);
+
+        async function importUsers() {
+            const fileInput = document.getElementById("excelFile");
+            if (!fileInput.files.length) {
+                alert("Excel file select");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: "array" });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(sheet);
+
+                for (const u of rows) {
+                    if (!u.Key) continue;
+
+                    await setDoc(doc(db, "users", u.Key), {
+                        branchId: u.branchId,
+                        code: u.code,
+                        role: u.role,
+                        password: u.password,
+                        username: u.username,
+                        usernum: u.usernum,
+                        deviceId: u.deviceId || "",
+                        createdAt: serverTimestamp()
+                    });
+
+                    console.log("Imported:", u.Key);
+                }
+
+                alert("🎉 Import completed");
+            };
+
+            reader.readAsArrayBuffer(fileInput.files[0]);
+        }
+    </script>
+</body>
+
+</html>

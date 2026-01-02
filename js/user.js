@@ -1,7 +1,7 @@
-import { db, ref, set, get, onValue } from "./database.js";
-import { checkAndSetBranchName } from './utils.js';
+import { db, collection, doc, setDoc, updateDoc, getDoc, getDocs, onSnapshot, query, orderBy } from "./database.js";
+import { currentUser } from "./utils.js";
 
-checkAndSetBranchName();
+document.getElementById('branchNamehid').textContent = currentUser.branchId;
 
 const form = document.getElementById("user_form");
 const messageContainer = document.getElementById("messageContainer");
@@ -9,226 +9,205 @@ const tableReport = document.getElementById("userList");
 
 let editingUserId = null;
 
-// Convert user type id to name
-function getUserGroupName(id) {
-  switch (id) {
-    case "1": return "Branch";
-    case "2": return "Headoffice";
-    case "3": return "Admin";
-    default: return "Unknown";
-  }
-}
-
 // Load existing users to table
-const userRef = ref(db, `users`);
-onValue(userRef, function(snapshot) {
+const usersCol = collection(db, "users");
+const q = query(usersCol, orderBy("usernum"));
+
+onSnapshot(q, snapshot => {
   tableReport.innerHTML = "";
 
-  if (snapshot.exists()) {
-    const userArray = Object.entries(snapshot.val());
-    userArray.forEach(([id, currentUserValue]) => {
-      const groupName = getUserGroupName(currentUserValue.id);
-      tableReport.innerHTML += `
-        <tr class="user-row" data-id="${id}">
-          <td>${currentUserValue.usernum}</td>
-          <td>${currentUserValue.branch}</td>
-          <td>${currentUserValue.username}</td>
-          <td>${groupName}</td>
-        </tr>`;
-    });
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    tableReport.innerHTML += `
+      <tr class="user-row" data-id="${docSnap.id}">
+        <td>${data.usernum}</td>
+        <td>${data.code}</td>
+        <td>${data.branchId}</td>
+        <td>${data.username}</td>
+        <td>${data.role}</td>
+        <td><button class="btn reset-device" data-id="${docSnap.id}">Reset Device</button></td>
+      </tr>
+    `
+  });
+});
+// Reset Device
+tableReport.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("reset-device")) {
+    const userDocId = e.target.getAttribute("data-id");
+    if (!userDocId) return;
+    const confirmReset = confirm("Reset device for this user?");
+    if (!confirmReset) return;
+    try {
+      await updateDoc(doc(db, "users", userDocId), {
+        deviceId: null
+      });
+      messageContainer.innerHTML =
+        `<p class="success-message">Device reset successfully</p>`;
+      setTimeout(() => {
+        messageContainer.innerHTML = "";
+      }, 3000);
+
+    } catch (error) {
+      console.error("Reset failed:", error);
+      messageContainer.innerHTML =
+        `<p class="error-message">Reset failed</p>`;
+
+      setTimeout(() => {
+        messageContainer.innerHTML = "";
+      }, 3000);
+    }
   }
 });
+
 
 // Get next user ID
-function getNextUserId() {
-  const usersRef = ref(db, 'users');
-  get(usersRef).then(snapshot => {
-    if (snapshot.exists()) {
-      const users = snapshot.val();
-      const ids = Object.keys(users)
-        .filter(key => key.startsWith("user"))
-        .map(key => parseInt(key.replace("user", "")))
-        .filter(num => !isNaN(num));
+async function getNextUserId() {
+  try {
+    const snap = await getDocs(usersCol);
 
-      const maxId = ids.length ? Math.max(...ids) : 0;
-      const nextId = `user${maxId + 1}`;
-      document.getElementById("userid").value = nextId;
-    } else {
-      document.getElementById("userid").value = "user1";
-    }
-  }).catch(error => {
-    console.error("Error getting user IDs:", error);
+    let max = 0;
+    snap.forEach(doc => {
+      const num = parseInt(doc.data().usernum?.replace("user", ""));
+      if (!isNaN(num)) max = Math.max(max, num);
+    });
+
+    document.getElementById("userid").value = `user${max + 1}`;
+  } catch (err) {
     messageContainer.innerHTML = `<p class="error-message">Error loading user ID</p>`;
-     setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
-  });
+  }
 }
-
 document.addEventListener("DOMContentLoaded", getNextUserId);
 
+
 // Save New User
-form.addEventListener("submit", function (e) {
+const nameInput = document.getElementById("name");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+const userGroupInput = document.getElementById("usergrop");
+const userIdInput = document.getElementById("userid");
+const codeInput = document.getElementById("code");
+
+form.addEventListener("submit", async e => {
   e.preventDefault();
 
-    if (editingUserId) {    
-    messageContainer.innerHTML = `<p class="error-message">UserId Not Found </p>`;
+  if (editingUserId) {
+    messageContainer.innerHTML = `<p class="error-message">Clear form to add new user</p>`;
     return;
   }
 
-  const name = document.getElementById("name").value.trim();
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-  const userGroup = document.getElementById("usergrop").value.trim();
-  const userId = document.getElementById("userid").value.trim();
+  const name = nameInput.value.trim();
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+  const confirm = confirmPasswordInput.value;
+  const userGroup = userGroupInput.value;
+  const userId = userIdInput.value;
+  const code = codeInput.value;
 
-  if (!name || !username || !password || !confirmPassword || !userGroup) {
-    messageContainer.innerHTML = `<p class="error-message">All fields must be filled out.</p>`;
-     setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
+  if (!name || !username || !password || !confirm || !userGroup || !code) {
+    alert("All fields required");
     return;
   }
-
-  if (password !== confirmPassword) {
-    messageContainer.innerHTML = `<p class="error-message">Passwords do not match.</p>`;
-     setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
+  if (password !== confirm) {
+    alert("Passwords do not match");
     return;
   }
-
-  const userData = {
-    branch: name,
-    id: userGroup,
-    password: password,
-    username: username,
-    usernum: userId,
-  };
-
-  const userRef = ref(db, `users/${userId}`);
-  messageContainer.innerHTML = `<p class="info-message">Saving</p>`;
-
-
-  set(userRef, userData)
-    .then(() => {
-      messageContainer.innerHTML = `<p class="success-message">Saved</p>`;
-       setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
-
-      form.reset();
-      getNextUserId();
-    })
-    .catch(error => {
-      console.error("Error saving data: ", error);
-      messageContainer.innerHTML = `<p class="error-message">Not Saved: ${error.message}</p>`;
-
-       setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
+  try {
+    await setDoc(doc(db, "users", userId), {
+      branchId: name,
+      code,
+      username,
+      password,
+      role: userGroup,
+      usernum: userId,
+      deviceId: "",
+      createdAt: new Date()
     });
+
+    alert("Saved");
+    form.reset();
+    getNextUserId();
+  } catch (err) {
+    alert(`${err.message}`);
+  }
 });
 
-// Row Click to Populate for Update
-tableReport.addEventListener("dblclick", function (e) {
-  const row = e.target.closest(".user-row");
-  if (row) {
-    const userId = row.getAttribute("data-id");
-    editingUserId = userId;
 
-    get(ref(db, `users/${userId}`)).then(snapshot => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        document.getElementById("userid").value = userId;
-        document.getElementById("name").value = data.branch;
-        document.getElementById("username").value = data.username;
-        document.getElementById("password").value = data.password;
-        document.getElementById("confirmPassword").value = data.password;
-        document.getElementById("usergrop").value = data.id;
-      }
-    });
-  }
+// Row Click to Populate for Update
+tableReport.addEventListener("dblclick", async e => {
+  const row = e.target.closest(".user-row");
+  if (!row) return;
+  editingUserId = row.dataset.id;
+  const docSnap = await getDoc(doc(db, "users", editingUserId));
+  if (!docSnap.exists()) return;
+  const d = docSnap.data();
+  userid.value = d.usernum;
+  nameInput.value = d.branchId;
+  codeInput.value = d.code;
+  usernameInput.value = d.username;
+  passwordInput.value = d.password;
+  confirmPasswordInput.value = d.password;
+  userGroupInput.value = d.role;
 });
 
 // Update User
-document.querySelector(".update").addEventListener("click", function (e) {
+document.querySelector(".update").addEventListener("click", async e => {
   e.preventDefault();
-
   if (!editingUserId) {
-    messageContainer.innerHTML = `<p class="error-message">Please select a user to update.</p>`;
-
-     setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
+    alert("Select user first");
     return;
   }
-
-  const name = document.getElementById("name").value.trim();
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-  const userGroup = document.getElementById("usergrop").value.trim();
-  const userId = document.getElementById("userid").value.trim();
-
-  if (!name || !username || !password || !confirmPassword || !userGroup) {
-    messageContainer.innerHTML = `<p class="error-message">All fields must be filled out.</p>`;
-     setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    messageContainer.innerHTML = `<p class="error-message">Passwords do not match.</p>`;
-     setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
-    return;
-  }
-
-  const userData = {
-    branch: name,
-    id: userGroup,
-    password: password,
-    username: username,
-    usernum: userId,
-  };
-
-  set(ref(db, `users/${editingUserId}`), userData)
-    .then(() => {
-      messageContainer.innerHTML = `<p class="success-message">Updated successfully!</p>`;
-       setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
-      form.reset();
-      editingUserId = null;
-      getNextUserId();
-    })
-    .catch((error) => {
-      console.error("Error updating data: ", error);
-      messageContainer.innerHTML = `<p class="error-message">Update failed: ${error.message}</p>`;
-       setTimeout(() => {    
-             messageContainer.innerHTML = "";
-         }, 3000);
+  try {
+    await updateDoc(doc(db, "users", editingUserId), {
+      branchId: nameInput.value.trim(),
+      code: codeInput.value.trim(),
+      username: usernameInput.value.trim(),
+      password: passwordInput.value,
+      role: userGroupInput.value
     });
+    alert("Updated");
+    form.reset();
+    editingUserId = null;
+    getNextUserId();
+  } catch (err) {
+    alert(`${err.message}`);
+  }
 });
 
 document.querySelector(".clear").addEventListener("click", () => {
   editingUserId = null;
+  form.reset();
   getNextUserId();
 });
 
-document.getElementById('nameSearch').addEventListener('keyup', function () {
-    const filter = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#userList tr');
+// Reset Device
+tableReport.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("reset-device")) {
+    const userDocId = e.target.getAttribute("data-id");
+    if (!userDocId) return;
+    const confirmReset = confirm("Reset device for this user?");
+    if (!confirmReset) return;
+    try {
+      await updateDoc(doc(db, "users", userDocId), {
+        deviceId: null
+      });
+      alert("Device reset successfully");
+    } catch (error) {
+      console.error("Reset failed:", error);
+      alert("Reset failed");
+    }
+  }
+});
 
-    rows.forEach(row => {
-        const nameCell = row.cells[1]; // index 1 = Name column
-        if (nameCell) {
-            const nameText = nameCell.textContent.toLowerCase();
-            row.style.display = nameText.includes(filter) ? '' : 'none';
-        }
-    });
+document.getElementById('nameSearch').addEventListener('keyup', function () {
+  const filter = this.value.toLowerCase();
+  const rows = document.querySelectorAll('#userList tr');
+
+  rows.forEach(row => {
+    const nameCell = row.cells[1]; // index 1 = Name column
+    if (nameCell) {
+      const nameText = nameCell.textContent.toLowerCase();
+      row.style.display = nameText.includes(filter) ? '' : 'none';
+    }
+  });
 });
