@@ -15,6 +15,7 @@ newTransBtn?.addEventListener('click', async () => {
 
   // Set current date
   document.getElementById("date").value = formatDate(new Date());
+  document.getElementById("date").disabled = true;
 
   const predictedCode = await getPredictedTransferCode();
   document.getElementById("code").value = predictedCode;

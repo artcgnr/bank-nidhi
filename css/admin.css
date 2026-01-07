@@ -1,15 +1,14 @@
-
-.input_container{
-    flex: 1;
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;  
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-    height: 540px;
+.input_container {
+  flex: 1;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  height: 540px;
 }
 
 .title h3 {
@@ -17,8 +16,9 @@
   font-size: 20px;
   color: #022950;
 }
+
 .inputform {
- display: flex;
+  display: flex;
   flex-direction: column;
 }
 
@@ -85,133 +85,26 @@
   width: 100%;
   background-color: #fcfafa;
   padding: 20px;
-  border-radius: 10px; 
+  border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-.table-container {
-  max-height: 520px; 
-  overflow-y: auto;
-  overflow-x: auto;
-  border-radius: 8px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-  background-color: white;   
-}
-
-table thead {
-  background-color: #022950;
-  color: white;
-  
-}
-table thead th {
-  position: sticky;
-  top: 0;
-  background-color: #022950;
-  z-index: 1;
-}
-
-table th,
-table td {
-  padding: 5px;
-  border: 1px solid #ddd;
-  text-align: center;
-}
-
-table td {
-  font-size: 13px;
-  font-weight: 500;
-}
-table td b{
-  font-size: 13px;
-  text-transform: capitalize; 
-  font-style: italic; 
-}
-table td b.status-pending{
-  color: #e28802;
-  background-color: #faf9c879;
-}
-table td b.status-approved{
-  color: #026907;
-  background-color: #c7fcb679;
-}
-table td b.status-rejected{
-  color: #a10702;
-  background-color: #fcbebe48;
-}
-table td b.status-completed{
-  color: #020da1;
-  background-color: #c0c1ff63;
-}
-
-table tbody td[colspan="8"] {
-  color: #888;
-}
-
-.table-container input[type="text"] {
-  color: white;
-  font-size: 12px;
-  padding: 3px;
-  text-align: center;
-  width: 20%;
-  border: none;
-  border-radius: 5px;
-  background-color: #022950;
-  outline: none;
-}
-.table-container input[type="text"]::placeholder{
-  color: #ffffff;
-  font-size: 12px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-}
-
-@media (max-width: 768px) {
-  .input-box {
-    flex-direction: column;
-  }
-
-  .sub_btn {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  nav .logo h3 {
-    font-size: 18px;
-  }
-
-  nav .user-info p {
-    font-size: 12px;
-  }
-  .main_container {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .input_container,
-  .report_section {
-    width: 100%;
-    height: auto;
-  }
 }
 
 .adm_main_container {
-  padding: 12px;  
+  padding: 12px;
   margin-top: 38px;
 }
+
 .hidden {
   display: none;
 }
 
 .tabs {
   display: flex;
-  justify-content: flex-start;  
+  justify-content: flex-start;
   flex-direction: row;
-  gap: 20px; 
+  gap: 20px;
 }
+
 .tab-button {
   background-color: #ffffff;
   border: 1px solid #d1d9e6;
@@ -225,51 +118,54 @@ table tbody td[colspan="8"] {
   gap: 8px;
   font-weight: 500;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
   cursor: pointer;
 }
-.tab-button img{
+
+.tab-button img {
   width: 18px;
   height: 18px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button:hover {
   background-color: #02295057;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button.active {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
-  box-shadow: 0 4px 8px rgba(0,123,255,0.2);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
 }
 
-.output_container{
+.output_container {
   top: 0;
   padding: 7px;
-  
+
 }
-.tab-content .outsection{
+
+.tab-content .outsection {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.outsection .filter{
+.outsection .filter {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
 }
-.filter label{
+
+.filter label {
   font-size: 12px;
   font-weight: 600;
 }
 
-.filter input{
+.filter input {
   width: 100%;
   max-width: 220px;
   height: 6px;
@@ -297,41 +193,46 @@ table tbody td[colspan="8"] {
 
 .tab-content .primary-button,
 .filter-button {
- background-color: #f5f7fa;
+  background-color: #f5f7fa;
   border: 1px solid #d1d9e6;
   color: #333;
   padding: 2px 6px;
   margin-right: 10px;
   border-radius: 50px;
-   border: 2px solid #ffffff;
+  border: 2px solid #ffffff;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   height: 32px;
 }
 
-.filter-button{
-  padding: 2px 6px;  
+.filter-button {
+  padding: 2px 6px;
 }
 
 .tab-content .primary-button img,
-.filter-button img{
- width: 20px;
+.filter-button img {
+  width: 20px;
   height: 20px;
 }
 
 .tab-content .primary-button:hover,
 .filter-button:hover {
   background-color: #02295057;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#pendingList, #approvedList, #sentList, #rejectedList {
+#pendingList,
+#approvedList,
+#sentList,
+#rejectedList {
   padding: 0px;
-  min-height: 410px;
+  height: 72vh;
+  overflow-y: auto;
+  border-radius: 10px;
 }
 
 .table-container {
@@ -340,29 +241,36 @@ table tbody td[colspan="8"] {
   margin-top: 8px;
   font-size: 13px;
   background-color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-   overflow-x: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
- th, td {
+
+th,
+td {
   border: 1px solid #ddd;
   padding: 5px;
   text-align: center;
 }
- th {
+
+th {
   background-color: #022950;
   font-weight: 600;
-   position: sticky;
-   height: 20px;
-   z-index: 2;
+  position: sticky;
+  top: 0;
+  height: 20px;
+  z-index: 2;
+  color: #fff;
 }
- td{
+
+td {
   text-transform: uppercase;
   padding: 4px;
 }
- .act {
+
+.act {
   width: 12%;
 }
+
 .task-cell {
   font-size: 9px;
   font-weight: 600;
@@ -370,32 +278,36 @@ table tbody td[colspan="8"] {
   font-style: italic;
   text-transform: capitalize;
 }
- .task-cell b {
+
+.task-cell b {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
 }
+
 .created-at {
   font-size: 10px;
   width: 9%;
   font-style: italic;
   font-weight: 600;
 }
- tr:nth-child(even) {
+
+tr:nth-child(even) {
   background-color: #c6e4ff5e;
 }
- tr:hover {  
+
+tr:hover {
   background: #02295036;
 }
 
-.output_container .action-button {  
+.output_container .action-button {
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
   box-sizing: border-box;
   color: #FFFFFF;
   cursor: pointer;
   display: inline-block;
-  font-family: nunito,roboto,proxima-nova,"proxima nova",sans-serif;
+  font-family: nunito, roboto, proxima-nova, "proxima nova", sans-serif;
   font-size: 12px;
   font-weight: 600;
   outline: 0;
@@ -415,6 +327,7 @@ table tbody td[colspan="8"] {
   background-position: 0 0;
   background-color: #fff;
 }
+
 .action-button:active {
   opacity: .5;
 }
@@ -424,7 +337,8 @@ table tbody td[colspan="8"] {
   border: 1px solid #18681b;
   color: #18681b;
 }
-.btn-approve:hover{
+
+.btn-approve:hover {
   color: #18681b;
 }
 
@@ -433,7 +347,8 @@ table tbody td[colspan="8"] {
   border: 1px solid #851d16;
   color: white;
 }
-.btn-reject:hover{
+
+.btn-reject:hover {
   color: #851d16;
 }
 
@@ -442,7 +357,8 @@ table tbody td[colspan="8"] {
   border: 1px solid #105fa0;
   color: white;
 }
-.btn-send:hover{
+
+.btn-send:hover {
   color: #105fa0;
 }
 
@@ -459,6 +375,7 @@ table tbody td[colspan="8"] {
   z-index: 9999;
   font-weight: bold;
 }
+
 .btn {
   align-items: center;
   border-radius: 24px;
@@ -466,7 +383,7 @@ table tbody td[colspan="8"] {
   cursor: pointer;
   display: inline-flex;
   fill: currentcolor;
-  font-family: "Google Sans",Roboto,Arial,sans-serif;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
   font-size: 11px;
   font-weight: 600;
   height: 28px;
@@ -475,44 +392,70 @@ table tbody td[colspan="8"] {
   position: relative;
   text-align: center;
   text-transform: none;
-  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
   user-select: none;
-  -webkit-user-select: none; 
-  will-change: transform,opacity;
+  -webkit-user-select: none;
+  will-change: transform, opacity;
   z-index: 0;
 }
+
 .btn:active {
   box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
   outline: none;
   transform: scale(.9);
 }
+
 .btn-approved {
   background-color: #026907;
   color: #ffffff;
   border: 2px solid #026907;
 }
+
 .btn-approved:hover {
   background: #F6F9FE;
-  color: #026907;  
+  color: #026907;
   border: 2px solid #026907;
 }
+
 .btn-rejected {
   background-color: #851d16;
   color: #ffffff;
   border: 2px solid #851d16;
 }
+
 .btn-rejected:hover {
   background: #F6F9FE;
-  color: #851d16;  
+  color: #851d16;
   border: 2px solid #851d16;
 }
+
 .btn-completed {
   background-color: #020da1;
   color: #ffffff;
   border: 2px solid #020da1;
 }
+
 .btn-completed:hover {
   background: #F6F9FE;
-  color: #020da1;  
+  color: #020da1;
   border: 2px solid #020da1;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #022950;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #011c38;
 }
