@@ -342,6 +342,7 @@ table tbody td[colspan="8"] {
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+   overflow-x: auto;
 }
  th, td {
   border: 1px solid #ddd;
