@@ -23,8 +23,9 @@ onSnapshot(q, snapshot => {
         <td>${data.usernum}</td>
         <td>${data.code}</td>
         <td>${data.branchId}</td>
-        <td>${data.username}</td>
+        <td>${data.username}</td>        
         <td>${data.role}</td>
+        <td>${data.deviceId}</td>
         <td><button class="btn reset-device" data-id="${docSnap.id}">Reset Device</button></td>
       </tr>
     `
