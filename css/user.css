@@ -1,0 +1,264 @@
+.main_container {
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  height: 500px
+}
+
+.input_container {
+  flex: 1;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  height: 500px;
+}
+
+.title h3 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  color: #022950;
+}
+
+.inputform {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.input-box label {
+  font-size: 12px;
+}
+
+.input-box input,
+.input-box select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input-box input:focus,
+.input-box select:focus {
+  border-color: #022950;
+}
+
+.sub_btn {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.sub_btn button {
+  padding: 10px 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sub_btn button[type="submit"] {
+  background-color: #022950;
+  color: white;
+}
+
+.sub_btn .clear {
+  background-color: #ccc;
+  color: black;
+}
+
+.sub_btn button:hover {
+  opacity: 0.9;
+}
+
+#successMsg {
+  margin-top: 10px;
+  font-weight: 600;
+  color: green;
+}
+
+.report_section {
+  flex: 4;
+  height: 500px;
+  background-color: #fcfafa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+  max-height: 520px;
+  /* Adjust as needed */
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background-color: white;
+}
+
+table thead {
+  background-color: #022950;
+  color: white;
+
+}
+
+table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #022950;
+  z-index: 1;
+}
+
+table th,
+table td {
+  padding: 7px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+table td {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+table td b {
+  font-size: 13px;
+  text-transform: capitalize;
+  font-style: italic;
+}
+
+table td b.status-pending {
+  color: #e28802;
+  background-color: #faf9c879;
+}
+
+table td b.status-approved {
+  color: #026907;
+  background-color: #c7fcb679;
+}
+
+table td b.status-rejected {
+  color: #a10702;
+  background-color: #fcbebe48;
+}
+
+table td b.status-completed {
+  color: #020da1;
+  background-color: #c0c1ff63;
+}
+
+table tbody td[colspan="8"] {
+  color: #888;
+}
+
+.table-container input[type="text"] {
+  color: white;
+  font-size: 12px;
+  padding: 3px;
+  text-align: center;
+  width: 20%;
+  border: none;
+  border-radius: 5px;
+  background-color: #022950;
+  outline: none;
+}
+
+.table-container input[type="text"]::placeholder {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .input-box {
+    flex-direction: column;
+  }
+
+  .sub_btn {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  nav .logo h3 {
+    font-size: 18px;
+  }
+
+  nav .user-info p {
+    font-size: 12px;
+  }
+
+  .main_container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .input_container,
+  .report_section {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.btn {
+  align-items: center;
+  border-radius: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  height: 28px;
+  justify-content: center;
+  padding: 2px 17px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform, opacity;
+  z-index: 0;
+}
+
+.btn:active {
+  box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+  outline: none;
+  transform: scale(.9);
+}
+
+.reset-device {
+  background-color: #691f02;
+  color: #ffffff;
+  border: 2px solid #691f02;
+}
+
+.reset-device:hover {
+  background: #F6F9FE;
+  color: #691f02;
+  border: 2px solid #691f02;
+}
