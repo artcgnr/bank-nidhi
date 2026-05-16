@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         pledgeNumber: document.getElementById('pledgeNumber').value,
         branch: currentUser.branchId,
         amount: Number(document.getElementById('amount').value),
-        bankCharge: getBankCharge(document.getElementById('amount').value) || 0,
+        bankCharge: document.getElementById('transferType').value === 'IMPS' ? (getBankCharge(document.getElementById('amount').value) || 0) : 0,
         BeneficiaryName: document.getElementById('BeneficiaryName').value,
         status: "Pending",
         createdAt: serverTimestamp()
